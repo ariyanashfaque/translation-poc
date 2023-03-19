@@ -1,20 +1,85 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Translation POC</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
+    <ion-fab-button>
+      <ion-icon name="language-sharp"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-list>
+        <ion-item>
+          <ion-label>English</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Spanish</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-row>
+    <ion-col class="p-0" size-md="6" offset-md="3">
+      <ion-card>
+        <ion-card-content>
+          <ion-grid>
+            <form [formGroup]="auditCreateForm" *ngIf="auditCreateForm">
+              <ion-row>
+                <ion-col size="5">
+                  <div class="disabled">
+                    <span class="f-12">{{"Audit Ref. No." | translate}}</span>
+                  </div>
+                </ion-col>
+                <ion-col size="4">
+                  <div>
+                    <span class="disabled f-12">
+                      {{"Status" | translate}}: {{"Open" | translate}}
+                    </span>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <mat-form-field hideRequiredMarker appearance="outline">
+                    <mat-label>
+                      {{"Enter audit name" | translate}}
+                      <span style="color: red">*</span>
+                    </mat-label>
+                    <input matInput type="text" formControlName="name" />
+                  </mat-form-field>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <div>
+                    <p>
+                      {{"Type of Questionnaire" | translate}}
+                      <span style="color: red">*</span>
+                    </p>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+                    <ion-radio-group value="Annual" formControlName="type">
+                      <ion-item lines="none">
+                        <ion-radio value="Annual"></ion-radio>
+                        <ion-label class="ion-margin">
+                          {{"Annual" | translate}}
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-radio value="Cross"></ion-radio>
+                        <ion-label class="ion-margin">
+                          {{"Cross" | translate}}
+                        </ion-label>
+                      </ion-item>
+                    </ion-radio-group>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </form>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
 </ion-content>
