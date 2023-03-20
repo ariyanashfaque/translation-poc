@@ -1,7 +1,8 @@
 import { IonFab } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Network } from '@capacitor/network';
 import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -34,6 +35,8 @@ export class HomePage implements OnInit {
       type: [this.type],
       scopeOfAudit: [''],
     });
+
+    this.handleNetworkStatus();
   }
 
   handleLangChange = (lang: string) => {
@@ -41,5 +44,15 @@ export class HomePage implements OnInit {
     this.translate.use(lang);
     this.selectedLang = lang;
     this.fab.close();
+  };
+
+  handleNetworkStatus = async () => {
+    Network.addListener('networkStatusChange', (status) => {
+      console.log('Network status changed', status);
+    });
+
+    const status = await Network.getStatus();
+
+    console.log('Network status:', status.connected);
   };
 }
