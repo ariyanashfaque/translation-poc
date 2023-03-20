@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { IonFab } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -10,13 +11,21 @@ import { TranslateService } from '@ngx-translate/core';
 export class HomePage implements OnInit {
   type: string = 'Annual';
   auditCreateForm: FormGroup;
+  selectedLang: string = 'en';
+  @ViewChild('IonFab', { static: false }) fab: IonFab;
+  langs: any[] = [
+    { value: 'fr', title: 'French' },
+    { value: 'en', title: 'English' },
+    { value: 'es', title: 'Spanish' },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
     private translate: TranslateService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
+    this.translate.setDefaultLang('en');
+    this.translate.addLangs(['en', 'es', 'fr']);
+    this.translate.use('en');
   }
 
   ngOnInit(): void {
@@ -26,4 +35,11 @@ export class HomePage implements OnInit {
       scopeOfAudit: [''],
     });
   }
+
+  handleLangChange = (lang: string) => {
+    this.translate.setDefaultLang(lang);
+    this.translate.use(lang);
+    this.selectedLang = lang;
+    this.fab.close();
+  };
 }
