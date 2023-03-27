@@ -3,6 +3,7 @@ import { Network } from '@capacitor/network';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NetworkService } from '../services/network-service/network.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ export class HomePage implements OnInit {
   type: string = 'Annual';
   auditCreateForm: FormGroup;
   selectedLang: string = 'en';
+
   @ViewChild('IonFab', { static: false }) fab: IonFab;
   langs: any[] = [
     { value: 'fr', title: 'French' },
@@ -22,7 +24,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private networkService: NetworkService
   ) {
     this.translate.setDefaultLang('en');
     this.translate.addLangs(['en', 'es', 'fr']);
@@ -30,13 +33,14 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
+    const data = this.networkService.handleNetworkStatusChange();
+
+    this.networkService.logNetworkState();
     this.auditCreateForm = this.formBuilder.group({
       name: [''],
       type: [this.type],
       scopeOfAudit: [''],
     });
-
-    this.handleNetworkStatus();
   }
 
   handleLangChange = (lang: string) => {
@@ -44,15 +48,5 @@ export class HomePage implements OnInit {
     this.translate.use(lang);
     this.selectedLang = lang;
     this.fab.close();
-  };
-
-  handleNetworkStatus = async () => {
-    Network.addListener('networkStatusChange', (status) => {
-      console.log('Network status changed', status);
-    });
-
-    const status = await Network.getStatus();
-
-    console.log('Network status:', status.connected);
   };
 }
